@@ -1,0 +1,41 @@
+# Deploys main to the VPS: builds in GitHub Actions, then rsyncs dist/ to a key that can only write to the site folder.
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Never let two uploads race; the newest push wins.
+concurrency:
+  group: deploy-vps
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      # Served from the domain root, so no BASE_PATH (Vite defaults to "/").
+      - run: npm run build
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519
+
+      # The server forces this key into rrsync, locked to /var/www/odelist, so "./" is that folder.
+      # --delete removes old hashed asset files so the folder matches the build exactly.
+      - name: Upload
+        run: rsync -avz --delete -e "ssh -p ${{ secrets.SSH_PORT }}" dist/ deploy@${{ secrets.SSH_HOST }}:./

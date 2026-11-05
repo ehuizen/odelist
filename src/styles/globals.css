@@ -1,0 +1,61 @@
+/* Global styles: Tailwind, brand tokens and the loader animation. */
+@import "tailwindcss";
+
+@theme {
+    --color-basalt: #0e0e0e;
+    --color-raised: #161616;
+    --color-line-dark: #262626;
+    --color-bone: #edeae4;
+    --color-paper: #f6f5f2;
+    --color-bone-line: #dcd8cf;
+    --color-hover: #efede7;
+    --color-sky: #88ceea;
+    --color-sky-tint: #dff1f9;
+    --color-sky-ink: #1f6f8f;
+    --color-ash: #6e6a63;
+    --color-mid: #9a958c;
+
+    --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+    --font-mono: "Geist Mono Variable", ui-monospace, "SFMono-Regular", monospace;
+}
+
+html,
+body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes odelist-dot {
+    0%,
+    100% {
+        transform: scale(0.64);
+        opacity: 0.35;
+    }
+    33% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.loader-dot {
+    animation: odelist-dot 0.9s ease-in-out infinite;
+}
+.loader-dot:nth-child(2) {
+    animation-delay: 0.3s;
+}
+.loader-dot:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .loader-dot {
+        animation: none;
+        opacity: 0.35;
+        transform: scale(0.64);
+    }
+    .loader-dot:nth-child(2) {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

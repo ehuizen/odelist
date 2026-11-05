@@ -1,0 +1,21 @@
+node_modules/
+dist/
+.env
+.env.*
+CLAUDE.md
+CLAUDE.local.md
+# Private session log (kept locally, not published)
+docs/logbook.md
+
+# Build output and tooling
+dist/
+*.local
+*.log
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+_scaffold/
+
+# Local browser verification artifacts
+.verify/
