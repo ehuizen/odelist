@@ -1,16 +1,16 @@
 // The two stag pages: "Nothing found" (extraction found zero addresses) and the 404 page for unknown URLs.
 import type { Dispatch } from "react";
-import { formatCount } from "@/app/format";
 import type { FlowAction } from "@/app/flow-reducer";
+import { formatCount } from "@/app/format";
+import { Button, HeroStag, ReportLink, SiteHeader, buttonClass } from "@/components/ui";
 import type { ExtractionSummary } from "@/files/extract-sources";
-import { Button, buttonClass, ReportLink, SiteHeader, Stag } from "@/components/ui";
 
 function StagPage({ header, title, body, actions }: { header: React.ReactNode; title: string; body: React.ReactNode; actions: React.ReactNode }) {
     return (
         <div className="flex min-h-dvh flex-col bg-bone text-basalt">
             {header}
             <main className="flex flex-1 flex-col items-center justify-center gap-6 px-6 py-16 text-center">
-                <Stag className="h-[300px] w-auto" />
+                <HeroStag tone="light" className="h-[180px]" />
                 <h1 className="text-5xl font-bold tracking-[-0.04em] md:text-[72px]">{title}</h1>
                 <div className="max-w-[760px] font-mono text-base leading-[1.6] text-ash">{body}</div>
                 <div className="mt-2 flex flex-wrap justify-center gap-3">{actions}</div>
