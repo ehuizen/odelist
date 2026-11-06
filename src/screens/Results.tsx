@@ -94,11 +94,6 @@ export function Results({ view, dispatch }: ResultsProps) {
                             </div>
                         ))}
                     </dl>
-                    <p className="mt-8 font-mono text-sm leading-relaxed text-mid">
-                        Removed items stay visible.
-                        <br />
-                        Nothing disappears without a reason.
-                    </p>
                 </section>
 
                 <section aria-label="Addresses" className="flex flex-col self-start overflow-hidden rounded-[14px] border border-bone-line bg-paper">
@@ -110,7 +105,10 @@ export function Results({ view, dispatch }: ResultsProps) {
                                 type="button"
                                 aria-selected={tab === id}
                                 onClick={() => setTab(id)}
-                                className={cx("-mb-px cursor-pointer border-b-2 py-4 font-mono text-[15px]", tab === id ? "border-sky font-medium text-basalt" : "border-transparent text-ash hover:text-basalt")}
+                                className={cx(
+                                    "-mb-px cursor-pointer border-b-2 py-4 font-mono text-[15px]",
+                                    tab === id ? "border-sky font-medium text-basalt" : "border-transparent text-ash hover:text-basalt",
+                                )}
                             >
                                 {label} <span className="ml-1.5">{formatCount(count)}</span>
                             </button>
@@ -138,7 +136,16 @@ export function Results({ view, dispatch }: ResultsProps) {
 /** Check mark shown next to a removal that has been applied. */
 function CheckIcon() {
     return (
-        <svg aria-hidden="true" viewBox="0 0 20 20" className="size-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+            aria-hidden="true"
+            viewBox="0 0 20 20"
+            className="size-5 shrink-0"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
             <circle cx="10" cy="10" r="9" className="fill-sky stroke-sky" />
             <path d="M6 10.5l2.8 2.8L14 7.8" className="stroke-basalt" />
         </svg>
@@ -149,7 +156,10 @@ function Row({ email, status, dispatch }: { email: string; status: EntryStatus; 
     const kept = status === "kept";
     return (
         <li className="group flex min-h-14 items-center gap-4 border-b border-bone-line px-6 last:border-b-0 hover:bg-hover">
-            <span aria-hidden="true" className={cx("size-2.5 shrink-0 rounded-full", kept ? "bg-sky" : "border-[1.5px] border-ash")} />
+            <span
+                aria-hidden="true"
+                className={cx("size-2.5 shrink-0 rounded-full", kept ? "bg-sky" : status === "duplicate" ? "bg-rust" : "border-[1.5px] border-ash")}
+            />
             <span className={cx("min-w-0 flex-1 truncate font-mono text-[17px]", kept ? "text-basalt" : "text-ash line-through")}>{email}</span>
             {kept && (
                 <button
@@ -162,11 +172,23 @@ function Row({ email, status, dispatch }: { email: string; status: EntryStatus; 
                 </button>
             )}
             {status === "manual" && (
-                <button type="button" aria-label={`Restore ${email}`} className="cursor-pointer text-sm font-medium text-basalt hover:underline" onClick={() => dispatch({ type: "restore-email", email })}>
+                <button
+                    type="button"
+                    aria-label={`Restore ${email}`}
+                    className="cursor-pointer text-sm font-medium text-basalt hover:underline"
+                    onClick={() => dispatch({ type: "restore-email", email })}
+                >
                     Restore
                 </button>
             )}
-            <span className={cx("shrink-0 rounded-full px-2.5 py-1 font-mono text-xs font-medium", kept ? "bg-sky-tint text-sky-ink" : "border border-bone-line text-ash")}>{TAG[status]}</span>
+            <span
+                className={cx(
+                    "shrink-0 rounded-full px-2.5 py-1 font-mono text-xs font-medium",
+                    kept ? "bg-sky-tint text-sky-ink" : "border border-bone-line text-ash",
+                )}
+            >
+                {TAG[status]}
+            </span>
         </li>
     );
 }
