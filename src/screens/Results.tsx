@@ -1,7 +1,7 @@
 // Screen 2, Results: the clean count, what was removed and why, the list with Kept/Removed tabs, and Copy/Export.
 import { type Dispatch, useState } from "react";
-import { formatCount, pluralize } from "@/app/format";
 import type { FlowAction } from "@/app/flow-reducer";
+import { formatCount, pluralize } from "@/app/format";
 import type { ResultsView } from "@/app/use-clean-result";
 import { useAnnounce } from "@/components/Announcer";
 import { Button, SiteHeader } from "@/components/ui";
@@ -70,12 +70,13 @@ export function Results({ view, dispatch }: ResultsProps) {
             </SiteHeader>
 
             <main className="mx-auto grid w-full max-w-[1440px] flex-1 gap-10 px-6 py-10 md:px-12 lg:grid-cols-[420px_1fr] lg:gap-16">
-                <section aria-labelledby="result-heading" className="flex flex-col self-start lg:sticky lg:top-10">
+                <section aria-labelledby="result-heading" className="@container flex flex-col self-start lg:sticky lg:top-10">
                     <p className="font-mono text-[13px] tracking-[0.06em] text-ash">RESULT</p>
                     <h1
                         id="result-heading"
                         aria-label={`Clean list: ${formatCount(result.kept.length)} ${result.kept.length === 1 ? "email" : "emails"}`}
-                        className="mt-2 text-[96px] leading-none font-bold tracking-[-0.035em] md:text-[150px]"
+                        className="mt-2 leading-none font-bold tracking-[-0.035em] whitespace-nowrap"
+                        style={{ fontSize: `min(150px, ${(100 / (formatCount(result.kept.length).length * 0.78)).toFixed(2)}cqw)` }}
                     >
                         {formatCount(result.kept.length)}
                     </h1>
