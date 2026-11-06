@@ -47,10 +47,52 @@ export function Stag({ className }: { className?: string }) {
     return <img src={stagUrl} alt="" aria-hidden="true" className={cx("mix-blend-multiply", className)} />;
 }
 
+/** The stag as a single-colour line drawing; takes its colour from `currentColor`. */
+export function StagLines({ className }: { className?: string }) {
+    return (
+        <svg
+            aria-hidden="true"
+            viewBox="42 10 120 172"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={cx("transition-transform duration-300 group-data-[drop-target]:scale-110", className)}
+        >
+            <path d="M78 52 C70 40 66 28 70 16 M70 30 L58 26 M74 40 L62 40" />
+            <path d="M112 52 C120 40 124 28 120 16 M120 30 L132 26 M116 40 L128 40" />
+            <path
+                d="M74 58 C74 48 116 48 116 58 L116 92 C116 96 150 98 150 120 C150 138 132 146 112 146 L84 146 C76 146 74 138 74 128 Z"
+                className="fill-transparent transition-[fill] duration-300 group-data-[drop-target]:fill-sky"
+            />
+            <path d="M86 146 V176 M98 146 V176 M120 146 V176 M132 144 V176" />
+            <circle
+                cx="86"
+                cy="70"
+                r="1.5"
+                className="fill-current stroke-current transition-colors duration-300 group-data-[drop-target]:fill-basalt group-data-[drop-target]:stroke-basalt"
+            />
+            <circle
+                cx="104"
+                cy="70"
+                r="1.5"
+                className="fill-current stroke-current transition-colors duration-300 group-data-[drop-target]:fill-basalt group-data-[drop-target]:stroke-basalt"
+            />
+            <path d="M92 80 L95 83 L98 80" strokeWidth="3" className="transition-colors duration-300 group-data-[drop-target]:stroke-basalt" />
+        </svg>
+    );
+}
+
 /** Top bar with the wordmark and screen-specific actions. */
 export function SiteHeader({ tone, children }: { tone: "dark" | "light"; children?: ReactNode }) {
     return (
-        <header className={cx("flex h-[100px] items-center justify-between border-b px-6 md:px-12", tone === "dark" ? "border-line-dark text-bone" : "border-bone-line text-basalt")}>
+        <header
+            className={cx(
+                "flex h-[100px] items-center justify-between border-b px-6 md:px-12",
+                tone === "dark" ? "border-line-dark text-bone" : "border-bone-line text-basalt",
+            )}
+        >
             <a href={import.meta.env.BASE_URL} aria-label="Odelist home" className="rounded focus-visible:outline-2 focus-visible:outline-sky">
                 <Wordmark className="h-8 w-auto" />
             </a>
