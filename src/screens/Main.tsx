@@ -1,6 +1,6 @@
 // Screen 1, Main: the dark hero with the dropzone. Files or pasted text go in; while extraction runs, the loader shows in the dropzone.
 import { type Dispatch, useEffect, useRef, useState } from "react";
-import { DropZone, FileTrigger, isFileDropItem } from "react-aria-components";
+import { Button as AriaButton, DropZone, FileTrigger, isFileDropItem } from "react-aria-components";
 import { formatBytes, formatCount } from "@/app/format";
 import type { FlowAction, FlowState } from "@/app/flow-reducer";
 import { Button, buttonClass, Loader, SiteHeader } from "@/components/ui";
@@ -162,9 +162,9 @@ export function Main({ state, dispatch, minimumMs }: MainProps) {
 
                             <div className="flex flex-wrap items-center justify-center gap-3">
                                 <FileTrigger acceptedFileTypes={ACCEPT_ATTRIBUTE.split(",")} allowsMultiple onSelect={(list) => list && addFiles(Array.from(list))}>
-                                    <button type="button" className={buttonClass(canFind ? "secondary" : "light", canFind ? "border-line-dark bg-transparent text-bone hover:bg-line-dark" : undefined)}>
+                                    <AriaButton className={buttonClass(canFind ? "secondary" : "light", canFind ? "border-line-dark bg-transparent text-bone hover:bg-line-dark" : undefined)}>
                                         {files.length ? "Add another file" : "Choose a file"}
-                                    </button>
+                                    </AriaButton>
                                 </FileTrigger>
                                 {canFind && (
                                     <Button variant="light" onClick={() => dispatch({ type: "start-processing" })}>
