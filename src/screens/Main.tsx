@@ -14,6 +14,9 @@ export interface MainProps {
     minimumMs: number;
 }
 
+/** Demo file in public/, for visitors who have no export to drop. */
+const SAMPLE_URL = `${import.meta.env.BASE_URL}sample-crm-export.txt`;
+
 const FILE_NOTE: Record<ReturnType<typeof checkFile>, string | null> = {
     ok: null,
     warn: "Large file: this may take a moment",
@@ -46,6 +49,17 @@ export function Main({ state, dispatch, minimumMs }: MainProps) {
     const canFind = pastedText.trim().length > 0 || usable.length > 0;
     const hasInput = files.length > 0 || pasteOpen;
     const addFiles = (list: File[]) => list.length && dispatch({ type: "add-files", files: list });
+
+    const trySample = async () => {
+        try {
+            const response = await fetch(SAMPLE_URL);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            addFiles([new File([await response.blob()], "sample-crm-export.txt", { type: "text/plain" })]);
+            dispatch({ type: "start-processing" });
+        } catch (error) {
+            dispatch({ type: "extraction-failed", message: error instanceof Error ? error.message : String(error) });
+        }
+    };
 
     const stop = () => {
         controllerRef.current?.abort();
@@ -175,6 +189,19 @@ export function Main({ state, dispatch, minimumMs }: MainProps) {
                                     </FileTrigger>
                                     {canFind && <Button onClick={() => dispatch({ type: "start-processing" })}>Find emails →</Button>}
                                 </div>
+
+                                {!hasInput && (
+                                    <p className="font-mono text-sm text-ash">
+                                        No file handy?{" "}
+                                        <button type="button" className="cursor-pointer text-basalt underline-offset-4 hover:underline" onClick={trySample}>
+                                            Try a sample
+                                        </button>{" "}
+                                        or{" "}
+                                        <a className="text-basalt underline-offset-4 hover:underline" href={SAMPLE_URL} download="sample-crm-export.txt">
+                                            download it
+                                        </a>
+                                    </p>
+                                )}
 
                                 {state.overLimitTotal !== null && (
                                     <div role="alert" className="w-full rounded-xl border border-bone-line bg-bone p-5 text-left">

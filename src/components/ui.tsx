@@ -41,12 +41,7 @@ export function Loader({ label = "Loading", tone = "light" }: { label?: string; 
     );
 }
 
-/** The stag, used on empty and error pages. */
-export function Stag({ className }: { className?: string }) {
-    return <img src={`${import.meta.env.BASE_URL}stag.svg`} alt="" aria-hidden="true" className={cx("mix-blend-multiply", className)} />;
-}
-
-/** The stag with a body fill that turns brand blue while a file is dragged over the parent `group` dropzone. `tone` is the page background. */
+/** The stag, shown on the home, empty and 404 pages, with a body fill that turns brand blue while a file is dragged over the parent `group` dropzone. `tone` is the page background. */
 export function HeroStag({ tone, className }: { tone: "light" | "dark"; className?: string }) {
     const base = import.meta.env.BASE_URL;
     return (
