@@ -1,5 +1,5 @@
 // Small shared UI pieces: buttons, loader, stag and site header.
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { type ButtonHTMLAttributes, type ReactNode, useEffect, useState } from "react";
 import { cx } from "@/utils/cx";
 import { Wordmark } from "./Wordmark";
 
@@ -72,8 +72,8 @@ export function SiteHeader({ tone, children }: { tone: "dark" | "light"; childre
     return (
         <header
             className={cx(
-                "flex h-[100px] items-center justify-between border-b px-6 md:px-12",
-                tone === "dark" ? "border-line-dark text-bone" : "border-bone-line text-basalt",
+                "sticky top-0 z-20 flex h-[100px] items-center justify-between border-b px-6 md:px-12",
+                tone === "dark" ? "border-line-dark bg-basalt text-bone" : "border-bone-line bg-bone text-basalt",
             )}
         >
             <a href={import.meta.env.BASE_URL} aria-label="Odelist home" className="rounded focus-visible:outline-2 focus-visible:outline-sky">
@@ -90,5 +90,40 @@ export function ReportLink() {
         <a href={REPORT_URL} target="_blank" rel="noreferrer" className="hidden text-sm text-ash hover:text-basalt sm:inline">
             Report a bug or feature
         </a>
+    );
+}
+
+/** Bottom-left thank-you note that appears shortly after it mounts and can be dismissed. */
+export function FeedbackToast({ delayMs = 1200 }: { delayMs?: number }) {
+    const [visible, setVisible] = useState(false);
+    const [dismissed, setDismissed] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setVisible(true), delayMs);
+        return () => clearTimeout(timer);
+    }, [delayMs]);
+
+    if (!visible || dismissed) return null;
+    return (
+        <aside
+            role="status"
+            className="fixed bottom-6 left-6 z-10 flex max-w-[360px] items-start gap-4 rounded-[14px] border border-bone-line bg-paper p-5 shadow-lg transition duration-300 starting:translate-y-2 starting:opacity-0"
+        >
+            <p className="text-[15px] leading-snug">
+                <strong className="font-bold">Hey! Thanks for using Odelist.</strong> If you spot any errors or bugs, please{" "}
+                <a href={REPORT_URL} target="_blank" rel="noreferrer" className="font-medium underline underline-offset-4 hover:text-ash">
+                    let us know on GitHub
+                </a>
+                .
+            </p>
+            <button
+                type="button"
+                aria-label="Dismiss"
+                className="cursor-pointer px-1 text-lg leading-none text-ash hover:text-basalt"
+                onClick={() => setDismissed(true)}
+            >
+                ×
+            </button>
+        </aside>
     );
 }

@@ -4,7 +4,7 @@ import type { FlowAction } from "@/app/flow-reducer";
 import { formatCount, pluralize } from "@/app/format";
 import type { ResultsView } from "@/app/use-clean-result";
 import { useAnnounce } from "@/components/Announcer";
-import { Button, SiteHeader } from "@/components/ui";
+import { Button, FeedbackToast, SiteHeader } from "@/components/ui";
 import type { EntryStatus } from "@/core/explain-list";
 import { copyList, downloadCsv } from "@/files/export-list";
 import { cx } from "@/utils/cx";
@@ -70,7 +70,7 @@ export function Results({ view, dispatch }: ResultsProps) {
             </SiteHeader>
 
             <main className="mx-auto grid w-full max-w-[1440px] flex-1 gap-10 px-6 py-10 md:px-12 lg:grid-cols-[420px_1fr] lg:gap-16">
-                <section aria-labelledby="result-heading" className="@container flex flex-col self-start lg:sticky lg:top-10">
+                <section aria-labelledby="result-heading" className="@container flex flex-col self-start lg:sticky lg:top-[140px]">
                     <p className="font-mono text-[13px] tracking-[0.06em] text-ash">RESULT</p>
                     <h1
                         id="result-heading"
@@ -97,8 +97,8 @@ export function Results({ view, dispatch }: ResultsProps) {
                     </dl>
                 </section>
 
-                <section aria-label="Addresses" className="flex flex-col self-start overflow-hidden rounded-[14px] border border-bone-line bg-paper">
-                    <div role="tablist" aria-label="Filter addresses" className="flex gap-8 border-b border-bone-line px-6">
+                <section aria-label="Addresses" className="flex flex-col self-start overflow-clip rounded-[14px] border border-bone-line bg-paper">
+                    <div role="tablist" aria-label="Filter addresses" className="sticky top-[100px] z-10 flex gap-8 border-b border-bone-line bg-paper px-6">
                         {tabs.map(([id, label, count]) => (
                             <button
                                 key={id}
@@ -130,6 +130,7 @@ export function Results({ view, dispatch }: ResultsProps) {
                     {rows.length === 0 && <p className="px-6 py-10 text-center font-mono text-sm text-mid">Nothing here.</p>}
                 </section>
             </main>
+            <FeedbackToast />
         </div>
     );
 }
